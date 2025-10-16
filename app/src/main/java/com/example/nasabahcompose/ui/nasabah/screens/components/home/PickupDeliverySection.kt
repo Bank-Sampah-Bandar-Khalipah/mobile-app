@@ -1,4 +1,4 @@
-package com.example.nasabahcompose.ui.components
+package com.example.nasabahcompose.ui.nasabah.screens.components.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,13 +12,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun PickupDeliverySection() {
+fun PickupDeliverySection(navController: NavHostController) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = "Penjemputan sekarang untuk ambil di tempat atau diantar ke lokasimu!",
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             color = Color.DarkGray
         )
 
@@ -30,7 +32,9 @@ fun PickupDeliverySection() {
         ) {
             // Pick Up Card
             Card(
-                onClick = { /* Pick Up */ },
+                onClick = {
+                    navController.navigate("delivery")
+                },
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier
@@ -45,7 +49,7 @@ fun PickupDeliverySection() {
                             .align(Alignment.TopStart),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        Text("Pick Up", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color(0xFF0D1541))
+                        Text("Antar Sendiri", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color(0xFF0D1541))
                         Text("Antar sampah ke lokasi", fontSize = 14.sp, color = Color(0xFF3B3B3B))
                     }
 
@@ -62,7 +66,9 @@ fun PickupDeliverySection() {
 
             // Delivery Card
             Card(
-                onClick = { /* Delivery */ },
+                onClick = {
+                    navController.navigate("pickup")
+                },
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier
@@ -77,7 +83,7 @@ fun PickupDeliverySection() {
                             .align(Alignment.TopStart),
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        Text("Delivery", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color(0xFF1A4AC3))
+                        Text("Dijemput", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color(0xFF1A4AC3))
                         Text("Segera diantar ke lokasimu", fontSize = 14.sp, color = Color(0xFF3B3B3B))
                     }
 
@@ -98,5 +104,8 @@ fun PickupDeliverySection() {
 @Preview(showBackground = true)
 @Composable
 fun PickupDeliverySectionPreview() {
-    PickupDeliverySection()
+    // Dummy nav controller
+    val dummyNavController = rememberNavController()
+    PickupDeliverySection(navController = dummyNavController)
 }
+

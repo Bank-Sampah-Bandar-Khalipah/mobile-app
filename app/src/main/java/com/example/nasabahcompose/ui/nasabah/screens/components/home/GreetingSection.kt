@@ -1,4 +1,4 @@
-package com.example.nasabahcompose.ui.components
+package com.example.nasabahcompose.ui.nasabah.screens.components.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -40,7 +40,7 @@ fun GreetingSection(
         Column(
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .padding(start = 24.dp, top = 56.dp, end = 24.dp)
+                .padding(start = 24.dp, top = 40.dp, end = 24.dp)
         ) {
             Text(
                 text  = "Hi $name,",

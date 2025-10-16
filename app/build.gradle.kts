@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -49,6 +50,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -68,4 +70,15 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
     implementation ("com.google.maps.android:maps-compose:2.0.0")
     implementation ("com.google.android.gms:play-services-maps:17.0.1")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation ("com.google.maps.android:maps-compose:2.0.0")
+    implementation ("com.google.android.gms:play-services-maps:17.0.1")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+    implementation ("androidx.datastore:datastore-core:1.1.1")
+
 }
+
+apply(plugin = "com.google.gms.google-services")

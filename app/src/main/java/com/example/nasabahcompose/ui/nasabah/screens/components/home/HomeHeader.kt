@@ -1,4 +1,4 @@
-package com.example.nasabahcompose.ui.components
+package com.example.nasabahcompose.ui.nasabah.screens.components.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -23,7 +23,7 @@ fun HomeHeader(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .offset(y = 140.dp) // atur posisi floating di bawah header
+                    .offset(y = 120.dp) // atur posisi floating di bawah header
             ) {
                 PointCard(points = points, onRedeemClick = onRedeemClick)
             }
