@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.nasabahcompose.data.HistoryItem
-import com.example.nasabahcompose.ui.nasabah.screens.components.CommonScreenHeader
-import com.example.nasabahcompose.ui.nasabah.screens.components.MyNavbarBar
-import com.example.nasabahcompose.ui.nasabah.screens.components.history.HistoryTable
+import com.example.nasabahcompose.ui.nasabah.components.commons.CommonScreenHeader
+import com.example.nasabahcompose.ui.nasabah.components.commons.MyNavbarBar
+import com.example.nasabahcompose.ui.nasabah.components.history.HistoryTable
 
 // Fungsi untuk menghitung jumlah data tiap status
 fun getStatusSummary(items: List<HistoryItem>): Map<String, Int> {
