@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 val PrimaryColor = Color(0xFF0B1D51)
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
+    primary = PrimaryColor,
     secondary = PurpleGrey80,
     tertiary = Pink80
 )
@@ -49,7 +49,7 @@ fun NasabahComposeTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
+        darkTheme -> LightColorScheme
         else -> LightColorScheme
     }
 
