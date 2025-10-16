@@ -24,17 +24,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.nasabahcompose.ui.theme.NasabahComposeTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+
+data class UserData(
+    val username: String = "",
+    val role: String = ""
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    onLoginSuccess: (String) -> Unit
+    onLoginSuccess: (UserData) -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -88,7 +91,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(if (isSmallScreen) 16.dp else 24.dp))
 
-            // Email TextField dengan fixed height dan responsive
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
@@ -122,7 +124,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(if (isSmallScreen) 12.dp else 16.dp))
 
-            // Password TextField dengan fixed height dan responsive
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -226,7 +227,7 @@ private fun performLogin(
     email: String,
     password: String,
     context: android.content.Context,
-    onLoginSuccess: (String) -> Unit,
+    onLoginSuccess: (UserData) -> Unit,
     setLoading: (Boolean) -> Unit
 ) {
     setLoading(true)
@@ -240,11 +241,13 @@ private fun performLogin(
                         .getReference("user")
                         .child(uid)
 
-                    userRef.child("username").get()
+                    userRef.get()
                         .addOnSuccessListener { snapshot ->
                             setLoading(false)
-                            val username = snapshot.getValue(String::class.java) ?: "User"
-                            onLoginSuccess(username)
+                            val username = snapshot.child("username").getValue(String::class.java) ?: "User"
+                            val role = snapshot.child("role").getValue(String::class.java) ?: "user"
+
+                            onLoginSuccess(UserData(username, role))
                         }
                         .addOnFailureListener { exception ->
                             setLoading(false)
@@ -253,8 +256,8 @@ private fun performLogin(
                                 "Gagal memuat data: ${exception.message}",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            // Tetap login meskipun gagal fetch username
-                            onLoginSuccess("User")
+                            // Default ke user jika gagal
+                            onLoginSuccess(UserData("User", "user"))
                         }
                 } else {
                     setLoading(false)
@@ -278,12 +281,4 @@ private fun performLogin(
                 Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
             }
         }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    NasabahComposeTheme {
-        LoginScreen(onLoginSuccess = {})
-    }
 }

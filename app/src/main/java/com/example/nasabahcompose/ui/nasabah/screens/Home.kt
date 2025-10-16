@@ -14,12 +14,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.nasabahcompose.R
 import com.example.nasabahcompose.data.Trash
-import com.example.nasabahcompose.ui.components.*
-import com.example.nasabahcompose.ui.nasabah.screens.components.home.FeatureSection
-import com.example.nasabahcompose.ui.nasabah.screens.components.home.HomeHeader
-import com.example.nasabahcompose.ui.nasabah.screens.components.home.PickupDeliverySection
-import com.example.nasabahcompose.ui.nasabah.screens.components.home.TrashPriceSection
-import com.example.nasabahcompose.ui.nasabah.screens.components.MyNavbarBar
+import com.example.nasabahcompose.ui.nasabah.components.home.FeatureSection
+import com.example.nasabahcompose.ui.nasabah.components.home.HomeHeader
+import com.example.nasabahcompose.ui.nasabah.components.home.PickupDeliverySection
+import com.example.nasabahcompose.ui.nasabah.components.home.TrashPriceSection
+import com.example.nasabahcompose.ui.nasabah.components.commons.MyNavbarBar
 
 @Composable
 fun HomeScreen(username: String, navController: NavHostController) {

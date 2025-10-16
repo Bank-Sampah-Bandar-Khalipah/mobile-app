@@ -6,8 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.nasabahcompose.data.PickupDetail
-import com.example.nasabahcompose.ui.nasabah.screens.DeliveryScreen
-import com.example.nasabahcompose.ui.nasabah.screens.PenjemputanScreen
+import com.example.nasabahcompose.ui.nasabah.screens.pickup.DeliveryScreen
+import com.example.nasabahcompose.ui.nasabah.screens.pickup.PenjemputanScreen
 import com.google.gson.Gson
 import java.net.URLDecoder
 import androidx.navigation.NavHostController
