@@ -20,8 +20,13 @@ import com.example.nasabahcompose.R
 import com.example.nasabahcompose.data.PickupDetail
 import com.example.nasabahcompose.data.Trash
 import com.example.nasabahcompose.ui.admin.components.AdminBottomNavigation
+import com.example.nasabahcompose.ui.admin.screens.AdminAddScreen
+import com.example.nasabahcompose.ui.admin.screens.AdminEditInformationScreen
+import com.example.nasabahcompose.ui.admin.screens.AdminGatheringScreen
 import com.example.nasabahcompose.ui.admin.screens.AdminHomeScreen
+import com.example.nasabahcompose.ui.admin.screens.AdminPickUpScreen
 import com.example.nasabahcompose.ui.admin.screens.AdminUserScreen
+import com.example.nasabahcompose.ui.admin.screens.AdminWithdrawalScreen
 import com.example.nasabahcompose.ui.auth.LoginScreen
 import com.example.nasabahcompose.ui.nasabah.screens.HelpScreen
 import com.example.nasabahcompose.ui.nasabah.screens.HistoryScreen
@@ -90,10 +95,14 @@ class MainActivity : ComponentActivity() {
                             userRole = userData.role
 
                             // Save login state
-                            AuthManager.saveLoginState(this@MainActivity, userData.username, userData.role)
+                            AuthManager.saveLoginState(
+                                this@MainActivity,
+                                userData.username,
+                                userRole
+                            )
 
                             // Navigate based on role
-                            if (userData.role == "admin") {
+                            if (userRole == "admin") {
                                 navController.navigate("admin_home") {
                                     popUpTo("login") { inclusive = true }
                                 }
@@ -119,6 +128,58 @@ class MainActivity : ComponentActivity() {
                         ) { paddingValues ->
                             Box(modifier = Modifier.padding(paddingValues)) {
                                 AdminHomeScreen(
+                                    username = username,
+                                    navController = navController
+                                )
+                            }
+                        }
+                    }
+
+                    composable("admin_withdrawal") {
+                        Scaffold { paddingValues ->
+                            Box(modifier = Modifier.padding(paddingValues)) {
+                                AdminWithdrawalScreen(
+                                    username = username,
+                                    navController = navController
+                                )
+                            }
+                        }
+                    }
+                    composable("admin_edit_information") {
+                        Scaffold { paddingValues ->
+                            Box(modifier = Modifier.padding(paddingValues)) {
+                                AdminEditInformationScreen(
+                                    username = username,
+                                    navController = navController
+                                )
+                            }
+                        }
+                    }
+                    composable("admin_pickup") {
+                        Scaffold { paddingValues ->
+                            Box(modifier = Modifier.padding(paddingValues)) {
+                                AdminPickUpScreen(
+                                    username = username,
+                                    navController = navController
+                                )
+                            }
+                        }
+                    }
+                    composable("admin_gathering") {
+                        Scaffold { paddingValues ->
+                            Box(modifier = Modifier.padding(paddingValues)) {
+                                AdminGatheringScreen(
+                                    username = username,
+                                    navController = navController
+                                )
+                            }
+                        }
+                    }
+
+                    composable("admin_add") {
+                        Scaffold { paddingValues ->
+                            Box(modifier = Modifier.padding(paddingValues)) {
+                                AdminAddScreen(
                                     username = username,
                                     navController = navController
                                 )
@@ -228,12 +289,20 @@ class MainActivity : ComponentActivity() {
                         )
                     ) { backStackEntry ->
                         val encoded = backStackEntry.arguments?.getString("dataJson") ?: ""
-                        val addressEncoded = backStackEntry.arguments?.getString("userAddress") ?: ""
+                        val addressEncoded =
+                            backStackEntry.arguments?.getString("userAddress") ?: ""
 
-                        val decoded = java.net.URLDecoder.decode(encoded, java.nio.charset.StandardCharsets.UTF_8.toString())
-                        val userAddress = java.net.URLDecoder.decode(addressEncoded, java.nio.charset.StandardCharsets.UTF_8.toString())
+                        val decoded = java.net.URLDecoder.decode(
+                            encoded,
+                            java.nio.charset.StandardCharsets.UTF_8.toString()
+                        )
+                        val userAddress = java.net.URLDecoder.decode(
+                            addressEncoded,
+                            java.nio.charset.StandardCharsets.UTF_8.toString()
+                        )
 
-                        val pickupDetail = com.google.gson.Gson().fromJson(decoded, PickupDetail::class.java)
+                        val pickupDetail =
+                            com.google.gson.Gson().fromJson(decoded, PickupDetail::class.java)
 
                         PenjemputanScreen(
                             navController = navController,
