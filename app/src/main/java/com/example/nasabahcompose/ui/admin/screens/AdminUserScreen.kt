@@ -152,7 +152,7 @@ fun AdminUserScreen(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                    onClick = {}
+                    onClick = { navController.navigate("admin_edit_profile") }
                 ) {
                     Row(
                         modifier = Modifier
@@ -195,7 +195,7 @@ fun AdminUserScreen(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                    onClick = {}
+                    onClick = { navController.navigate("admin_edit_password") }
                 ) {
                     Row(
                         modifier = Modifier
@@ -246,7 +246,7 @@ fun AdminUserScreen(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                    onClick = {}
+                    onClick = { navController.navigate("admin_privacy_policy") }
                 ) {
                     Row(
                         modifier = Modifier

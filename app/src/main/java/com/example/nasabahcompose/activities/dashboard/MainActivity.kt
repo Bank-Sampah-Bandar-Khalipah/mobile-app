@@ -22,9 +22,12 @@ import com.example.nasabahcompose.data.Trash
 import com.example.nasabahcompose.ui.admin.components.AdminBottomNavigation
 import com.example.nasabahcompose.ui.admin.screens.AdminAddScreen
 import com.example.nasabahcompose.ui.admin.screens.AdminEditInformationScreen
+import com.example.nasabahcompose.ui.admin.screens.AdminEditPasswordScreen
+import com.example.nasabahcompose.ui.admin.screens.AdminEditProfileScreen
 import com.example.nasabahcompose.ui.admin.screens.AdminGatheringScreen
 import com.example.nasabahcompose.ui.admin.screens.AdminHomeScreen
 import com.example.nasabahcompose.ui.admin.screens.AdminPickUpScreen
+import com.example.nasabahcompose.ui.admin.screens.AdminPrivacyPolicyScreen
 import com.example.nasabahcompose.ui.admin.screens.AdminUserScreen
 import com.example.nasabahcompose.ui.admin.screens.AdminWithdrawalScreen
 import com.example.nasabahcompose.ui.auth.LoginScreen
@@ -209,6 +212,39 @@ class MainActivity : ComponentActivity() {
                                             popUpTo(0) { inclusive = true }
                                         }
                                     }
+                                )
+                            }
+                        }
+                    }
+
+                    composable("admin_edit_profile") {
+                        Scaffold { paddingValues ->
+                            Box(modifier = Modifier.padding(paddingValues)) {
+                                AdminEditProfileScreen(
+                                    username = username,
+                                    navController = navController
+                                )
+                            }
+                        }
+                    }
+
+                    composable("admin_edit_password") {
+                        Scaffold { paddingValues ->
+                            Box(modifier = Modifier.padding(paddingValues)) {
+                                AdminEditPasswordScreen(
+                                    username = username,
+                                    navController = navController
+                                )
+                            }
+                        }
+                    }
+
+                    composable("admin_privacy_policy") {
+                        Scaffold { paddingValues ->
+                            Box(modifier = Modifier.padding(paddingValues)) {
+                                AdminPrivacyPolicyScreen(
+                                    username = username,
+                                    navController = navController
                                 )
                             }
                         }
