@@ -44,12 +44,12 @@ fun HistoryScreen(username: String, navController: NavController) {
     val statusSummary = getStatusSummary(historyItems)
 
     Scaffold(
-        bottomBar = { MyNavbarBar(navController = navController, username = username) }
+        bottomBar = { MyNavbarBar(navController = navController, username = username) },
+        containerColor = Color(0xFFF4F2F2)
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF4F2F2))
                 .padding(paddingValues)
                 .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState())

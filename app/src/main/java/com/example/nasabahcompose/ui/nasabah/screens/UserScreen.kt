@@ -52,13 +52,13 @@ fun UserScreen(username: String, navController: NavController) {
     }
 
     Scaffold(
-        bottomBar = { MyNavbarBar(navController = navController, username = firebaseUsername) }
-    ) { padding ->
+        bottomBar = { MyNavbarBar(navController = navController, username = firebaseUsername) },
+        containerColor = Color(0xFFF4F2F2)
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF4F2F2))
-                .padding(padding)
+                .padding(paddingValues)
                 .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally

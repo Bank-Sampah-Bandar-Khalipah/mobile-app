@@ -74,6 +74,8 @@ fun DeliveryScreen(navController: NavHostController) {
             // Konten
             Column(
                 modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
                     .verticalScroll(scrollState)
                     .padding(horizontal = 24.dp)
             ) {

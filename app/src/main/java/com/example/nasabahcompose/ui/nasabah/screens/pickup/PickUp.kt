@@ -23,7 +23,6 @@ import com.example.nasabahcompose.ui.nasabah.components.deliver.JenisSampahCard
 import com.example.nasabahcompose.ui.nasabah.components.deliver.LocationCardWithInput
 import com.example.nasabahcompose.ui.nasabah.components.deliver.TimePickerField
 import com.google.gson.Gson
-import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
@@ -32,7 +31,6 @@ fun PickUpScreen(navController: NavHostController) {
     var selectedTime by remember { mutableStateOf("") }
     var currentAddress by remember { mutableStateOf("") }
 
-    // Map untuk menyimpan weight setiap jenis sampah
     var plastikWeight by remember { mutableStateOf(0f) }
     var plastikPrice by remember { mutableStateOf(0) }
 
@@ -42,13 +40,11 @@ fun PickUpScreen(navController: NavHostController) {
     var kertasWeight by remember { mutableStateOf(0f) }
     var kertasPrice by remember { mutableStateOf(0) }
 
-    // State untuk dialog
     var showWarningDialog by remember { mutableStateOf(false) }
     var warningMessage by remember { mutableStateOf("") }
 
     val scrollState = rememberScrollState()
 
-    // Warning Dialog
     WarningAlertDialog(
         showDialog = showWarningDialog,
         onDismiss = { showWarningDialog = false },
@@ -62,25 +58,22 @@ fun PickUpScreen(navController: NavHostController) {
                 .background(Color(0xFFF4F2F2))
                 .fillMaxSize()
         ) {
-            // Header menggunakan CommonHeader
             CommonHeader(
                 title = "Informasi Tempat",
                 navController = navController
             )
 
-            // Konten
             Column(
                 modifier = Modifier
+                    .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(horizontal = 20.dp)
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Location Card dengan form input - Maksimal 10 kata
                 LocationCardWithInput(
                     currentAddress = currentAddress,
                     onAddressChange = { newAddress ->
-                        // Validasi maksimal 10 kata
                         val wordCount = newAddress.trim().split("\\s+".toRegex()).size
                         if (wordCount <= 10) {
                             currentAddress = newAddress
@@ -88,7 +81,6 @@ fun PickUpScreen(navController: NavHostController) {
                     }
                 )
 
-                // Info batas kata
                 Text(
                     text = "${currentAddress.trim().split("\\s+".toRegex()).filter { it.isNotEmpty() }.size}/10 kata",
                     fontSize = 12.sp,
@@ -107,7 +99,6 @@ fun PickUpScreen(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Date Picker
                 DatePickerField(
                     selectedDate = selectedDate,
                     onDateSelected = { selectedDate = it }
@@ -115,7 +106,6 @@ fun PickUpScreen(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Time Picker
                 TimePickerField(
                     selectedTime = selectedTime,
                     onTimeSelected = { selectedTime = it }
@@ -132,7 +122,6 @@ fun PickUpScreen(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Kartu Plastik
                 JenisSampahCard(
                     name = "Plastik",
                     iconRes = R.drawable.botol,
@@ -143,7 +132,6 @@ fun PickUpScreen(navController: NavHostController) {
                     }
                 )
 
-                // Kartu Kardus
                 JenisSampahCard(
                     name = "Kardus",
                     iconRes = R.drawable.kardus2,
@@ -154,7 +142,6 @@ fun PickUpScreen(navController: NavHostController) {
                     }
                 )
 
-                // Kartu Kertas
                 JenisSampahCard(
                     name = "Kertas",
                     iconRes = R.drawable.kertas,
@@ -167,10 +154,8 @@ fun PickUpScreen(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // Tombol Selanjutnya
                 Button(
                     onClick = {
-                        // Validasi
                         val totalWeight = plastikWeight + kardusWeight + kertasWeight
 
                         when {
@@ -195,7 +180,6 @@ fun PickUpScreen(navController: NavHostController) {
                                 showWarningDialog = true
                             }
                             else -> {
-                                // Kumpulkan semua sampah yang beratnya > 0
                                 val listSampah = mutableListOf<Triple<String, Double, Int>>()
 
                                 if (plastikWeight > 0) {
@@ -219,11 +203,9 @@ fun PickUpScreen(navController: NavHostController) {
                                     listSampah = listSampah
                                 )
 
-                                // Encode alamat juga
                                 val addressEncoded = Uri.encode(currentAddress.trim())
                                 val dataJson = Uri.encode(Gson().toJson(pickupDetail))
 
-                                // Navigasi dengan parameter alamat
                                 navController.navigate("penjemputan/$dataJson/$addressEncoded")
                             }
                         }
@@ -236,8 +218,6 @@ fun PickUpScreen(navController: NavHostController) {
                 ) {
                     Text("Selanjutnya", color = Color.White, fontSize = 16.sp)
                 }
-
-                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }

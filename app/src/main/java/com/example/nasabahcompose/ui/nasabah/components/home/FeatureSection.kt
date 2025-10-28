@@ -29,7 +29,6 @@ fun FeatureSection(navController: NavHostController) {
         FeatureItem("Informasi Sampah", R.drawable.ic_info),
         FeatureItem("Slip Setoran Sampah", R.drawable.ic_slip),
         FeatureItem("Informasi Tempat", R.drawable.ic_location),
-        FeatureItem("Penjemputan", R.drawable.ic_penjemputan)
     )
 
     Column(modifier = Modifier.fillMaxWidth()) {

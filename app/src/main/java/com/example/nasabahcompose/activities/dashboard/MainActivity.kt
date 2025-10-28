@@ -50,6 +50,20 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
+            val systemUiController = com.google.accompanist.systemuicontroller.rememberSystemUiController()
+            val darkIcons = true // ikon jadi gelap karena background putih
+
+            SideEffect {
+                systemUiController.setStatusBarColor(
+                    color = Color.White,
+                    darkIcons = darkIcons
+                )
+                systemUiController.setNavigationBarColor(
+                    color = Color.White,
+                    darkIcons = darkIcons
+                )
+            }
+
             val navController = rememberNavController()
             var username by rememberSaveable { mutableStateOf("") }
             var userRole by rememberSaveable { mutableStateOf("") }

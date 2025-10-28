@@ -2,7 +2,9 @@ package com.example.nasabahcompose.ui.nasabah.screens.deposit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,10 +22,6 @@ import com.example.nasabahcompose.data.dummy.dummySetoranList
 import com.example.nasabahcompose.model.Setoran
 import com.example.nasabahcompose.ui.nasabah.components.commons.CommonHeader
 
-/**
- * Helper: mapping icon berdasarkan jenis sampah.
- * Pastikan drawable: botol, kardus, kertas, ic_report ada.
- */
 fun getSampahIcon(jenis: String): Int {
     return when (jenis.lowercase()) {
         "botol plastik", "botol" -> R.drawable.botol
@@ -33,181 +31,264 @@ fun getSampahIcon(jenis: String): Int {
     }
 }
 
-/**
- * Rincian laporan yang mengambil data berdasarkan idLaporan dari dummySetoranList.
- * Desain dipertahankan persis.
- */
 @Composable
 fun RincianLaporanScreen(
     navController: NavController,
     idLaporan: String
 ) {
-    // Ambil data setoran dari dummy; fallback ke item pertama jika tidak ditemukan
-    val setoran: Setoran = dummySetoranList.firstOrNull { it.id == idLaporan } ?: dummySetoranList.first()
+    val setoran: Setoran = dummySetoranList.firstOrNull { it.id == idLaporan }
+        ?: dummySetoranList.first()
 
-    // Hitung total berat (2 desimal) dan total poin sudah tersedia di model
     val totalBeratRounded = String.format("%.2f", setoran.totalBerat)
-
-    // Jika hanya ada Botol Plastik saja dan user ingin tampilkan hanya satu (sesuai logika yg sempat ada),
-    // kita ikuti logika yang diberikan: tampilkan hanya item pertama bila semua jenis sama dan botol plastik.
-    val filteredItems = if (setoran.sampah.map { it.jenis.lowercase() }.distinct().size == 1 &&
-        setoran.sampah.first().jenis.equals("Botol Plastik", ignoreCase = true)
-    ) {
-        listOf(setoran.sampah.first())
-    } else {
-        setoran.sampah
-    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF7F5F5))
     ) {
-        // Header menggunakan CommonHeader
         CommonHeader(
             title = "Laporan Setoran Sampah",
             navController = navController,
             backgroundColor = Color(0xFFF7F5F5)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Card judul rincian
-        Card(
-            shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_report),
-                        contentDescription = null,
-                        tint = Color(0xFF1A1A1A),
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Rincian Laporan",
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 18.sp
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Konten utama
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
+            // Card Header "Rincian Laporan"
             Card(
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    // Baris 1: ID & Status
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(text = "ID Laporan", fontSize = 12.sp, color = Color.Gray)
-                            Text(text = setoran.id, fontWeight = FontWeight.SemiBold)
-                        }
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(text = "Status", fontSize = 12.sp, color = Color.Gray)
-                            Text(text = setoran.status, fontWeight = FontWeight.SemiBold)
-                        }
-                    }
+                Row(
+                    modifier = Modifier.padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_report),
+                        contentDescription = null,
+                        tint = Color(0xFF0A2B6E),
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "Rincian Laporan",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp,
+                        color = Color.Black
+                    )
+                }
+            }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-                    // Baris 2: Nama Petugas & Tanggal
-                    Row(modifier = Modifier.fillMaxWidth()) {
+            // Card Detail Setoran
+            Card(
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    // Row 1: ID Laporan dan Status
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(text = "Nama Petugas", fontSize = 12.sp, color = Color.Gray)
-                            Text(text = setoran.namaPetugas, fontWeight = FontWeight.SemiBold)
+                            Text(
+                                text = "ID Laporan",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = setoran.id,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp,
+                                color = Color.Black
+                            )
                         }
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(text = "Tanggal & Waktu", fontSize = 12.sp, color = Color.Gray)
-                            Text(text = setoran.tanggal, fontWeight = FontWeight.SemiBold)
+
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            horizontalAlignment = Alignment.End
+                        ) {
+                            Text(
+                                text = "Status",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = setoran.status,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp,
+                                color = Color.Black
+                            )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // List item sampah (sesuai filter)
-                    filteredItems.forEach { item ->
+                    // Row 2: Nama Petugas dan Tanggal & Waktu
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Nama Petugas",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = setoran.namaPetugas,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp,
+                                color = Color.Black
+                            )
+                        }
+
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            horizontalAlignment = Alignment.End
+                        ) {
+                            Text(
+                                text = "Tanggal & Waktu",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = setoran.tanggal,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp,
+                                color = Color.Black
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    // List Sampah dengan format baru
+                    setoran.sampah.forEach { item ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 6.dp)
                         ) {
-                            Icon(
-                                painter = painterResource(id = getSampahIcon(item.jenis)),
-                                contentDescription = null,
-                                modifier = Modifier.size(20.dp)
+                            // Nama jenis sampah
+                            Text(
+                                text = item.jenis,
+                                fontSize = 14.sp,
+                                color = Color.Gray,
+                                modifier = Modifier.weight(1f)
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = item.jenis, modifier = Modifier.weight(0.6f))
-                            Spacer(modifier = Modifier.width(8.dp))
-                            // berat 1 atau 2 desimal sesuai input
-                            Text(text = "${String.format("%.2f", item.beratKg)} Kg", modifier = Modifier.width(100.dp))
-                            Text(text = "${item.poin} Pts", modifier = Modifier.width(100.dp))
+
+                            // Separator |
+                            Text(
+                                text = "|",
+                                fontSize = 14.sp,
+                                color = Color.LightGray,
+                                modifier = Modifier.padding(horizontal = 8.dp)
+                            )
+
+                            // Berat
+                            Text(
+                                text = "${String.format("%.1f", item.beratKg)} Kg",
+                                fontSize = 14.sp,
+                                color = Color.Black,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier.width(80.dp)
+                            )
+
+                            // Harga per kg (asumsi dari poin, bisa disesuaikan)
+                            val hargaPerKg = (item.poin / item.beratKg).toInt()
+                            Text(
+                                text = "Rp${String.format("%,d", hargaPerKg)} s.d",
+                                fontSize = 12.sp,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(end = 4.dp)
+                            )
+
+                            // Total harga item
+                            Text(
+                                text = "Rp${String.format("%,d", item.poin)}",
+                                fontSize = 14.sp,
+                                color = Color.Black,
+                                fontWeight = FontWeight.Medium
+                            )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(Color(0xFFDDDDDD))
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Divider
+                    HorizontalDivider(
+                        modifier = Modifier.fillMaxWidth(),
+                        thickness = 1.dp,
+                        color = Color(0xFFE0E0E0)
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    // Total
-                    Row(modifier = Modifier.fillMaxWidth()) {
+                    // Total dengan format baru
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Total Berat
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "Total",
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
+
+                            Text(
+                                text = " | ",
+                                fontSize = 16.sp,
+                                color = Color.LightGray,
+                                modifier = Modifier.padding(horizontal = 4.dp)
+                            )
+
+                            Text(
+                                text = "$totalBeratRounded Kg",
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
+                        }
+
+                        // Total Rupiah
                         Text(
-                            text = "Total",
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.weight(1f)
-                        )
-                        Text(
-                            text = "$totalBeratRounded Kg",
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.width(100.dp),
-                            color = Color(0xFF0B1F5C)
-                        )
-                        Text(
-                            text = "${setoran.totalPoin} Pts",
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.width(100.dp),
-                            color = Color(0xFF0B1F5C)
+                            text = "Rp${String.format("%,d", setoran.totalPoin)}",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color(0xFF0A2B6E)
                         )
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
-/**
- * Preview: gunakan salah satu dummySetoranList untuk melihat tampilan persis.
- */
 @Preview(showBackground = true)
 @Composable
 fun RincianLaporanPreview() {
-    // ambil contoh dari dummy
     val exampleId = if (dummySetoranList.isNotEmpty()) dummySetoranList.first().id else "S001"
     RincianLaporanScreen(
         navController = rememberNavController(),

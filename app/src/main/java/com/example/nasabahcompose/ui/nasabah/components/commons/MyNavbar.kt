@@ -25,34 +25,48 @@ fun MyNavbarBar(navController: NavController, username: String) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: ""
 
-    NavigationBar (
-        containerColor = Color.White
+    NavigationBar(
+        containerColor = Color.White,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp), // Fixed height untuk navbar
+        tonalElevation = 8.dp
     ) {
-        items.forEach { item ->
-            val isSelected = currentRoute == item.route
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp), // Padding horizontal untuk jarak dari tepi
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            items.forEach { item ->
+                val isSelected = currentRoute == item.route
 
-            NavigationBarItem(
-                selected = isSelected,
-                onClick = {
-                    if (!isSelected) {
-                        navController.navigate(item.route) {
-                            launchSingleTop = true
+                NavigationBarItem(
+                    selected = isSelected,
+                    onClick = {
+                        if (!isSelected) {
+                            navController.navigate(item.route) {
+                                launchSingleTop = true
+                            }
                         }
-                    }
-                },
-                icon = {
-                    Icon(
-                        painter = item.icon,
-                        contentDescription = item.label,
-                        tint = if (isSelected) Color(0xFF1A4AC3) else Color.Gray,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                alwaysShowLabel = false,
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.Transparent
+                    },
+                    icon = {
+                        Icon(
+                            painter = item.icon,
+                            contentDescription = item.label,
+                            tint = if (isSelected) Color(0xFF1A4AC3) else Color.Gray,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    alwaysShowLabel = false,
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = Color.Transparent,
+                        selectedIconColor = Color(0xFF1A4AC3),
+                        unselectedIconColor = Color.Gray
+                    ),
+                    modifier = Modifier.weight(1f) // Distribusi merata
                 )
-            )
+            }
         }
     }
 }
@@ -68,4 +82,3 @@ fun prepareBottomMenu(): List<BottomMenuItem> {
         BottomMenuItem("User", painterResource(R.drawable.ic_user), "user")
     )
 }
-
