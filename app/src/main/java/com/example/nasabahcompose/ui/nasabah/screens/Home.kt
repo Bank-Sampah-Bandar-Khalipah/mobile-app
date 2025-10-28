@@ -32,19 +32,15 @@ fun HomeScreen(username: String, navController: NavHostController) {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            // Home Header dengan padding horizontal
-            Box() {
-                HomeHeader(
-                    name = username,
-                    points = "30.000",
-                    onRedeemClick = { navController.navigate("pencairan") }
-                )
-            }
+            // Home Header
+            HomeHeader(
+                name = username,
+                points = "30.000",
+                onRedeemClick = { navController.navigate("pencairan") }
+            )
 
-            // PickupDeliverySection dengan padding horizontal
-            Box() {
-                PickupDeliverySection(navController = navController)
-            }
+            // PickupDeliverySection
+            PickupDeliverySection(navController = navController)
 
             Spacer(modifier = Modifier.height(16.dp))
 

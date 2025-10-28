@@ -9,8 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,36 +28,34 @@ import com.example.nasabahcompose.ui.nasabah.components.commons.CommonHeader
 
 @Composable
 fun SetoranListScreen(navController: NavController) {
-    Scaffold { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFFF4F2F2))
-        ) {
-            // Header menggunakan CommonHeader
-            CommonHeader(
-                title = "Slip Setoran Sampah",
-                navController = navController
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF4F2F2))
+    ) {
+        // Header menggunakan CommonHeader
+        CommonHeader(
+            title = "Slip Setoran Sampah",
+            navController = navController
+        )
 
-            LazyColumn(
-                contentPadding = PaddingValues(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 8.dp,
-                    bottom = 16.dp
-                ),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                // List Card (pakai dummySetoranList kamu)
-                items(dummySetoranList) { setoran ->
-                    SetoranCard(
-                        setoran = setoran,
-                        onClick = {
-                            navController.navigate("detailSetoran/${setoran.id}")
-                        }
-                    )
-                }
+        LazyColumn(
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                top = 8.dp,
+                bottom = 16.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // List Card (pakai dummySetoranList kamu)
+            items(dummySetoranList) { setoran ->
+                SetoranCard(
+                    setoran = setoran,
+                    onClick = {
+                        navController.navigate("detailSetoran/${setoran.id}")
+                    }
+                )
             }
         }
     }
@@ -85,13 +81,13 @@ private fun SetoranCard(
             // Icon kiri (kotak kecil dengan ic_cart)
             Card(
                 shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFE8EAF6)),
                 modifier = Modifier.size(48.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_cart),
                     contentDescription = "Icon Setoran",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = Color(0xFF0A2B6E),
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxSize()
@@ -105,12 +101,13 @@ private fun SetoranCard(
                 Text(
                     text = setoran.tanggal,
                     fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = Color.Gray
                 )
                 Text(
                     text = setoran.id,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black
                 )
             }
 
@@ -118,11 +115,13 @@ private fun SetoranCard(
             Text(
                 text = "+${setoran.totalPoin} PTS",
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrowright),
                 contentDescription = "Detail",
+                tint = Color(0xFF0A2B6E),
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .size(16.dp)
@@ -131,10 +130,6 @@ private fun SetoranCard(
     }
 }
 
-/**
- * Preview: memakai dummySetoranList yang sama persis.
- * Tidak mengubah desain atau data.
- */
 @Preview(showBackground = true)
 @Composable
 private fun SetoranListScreenPreview() {
